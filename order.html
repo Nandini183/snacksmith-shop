@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Snacksmith - Food Ordering Website</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #fffdf4;
+      color: #333;
+    }
+
+    header {
+      background: linear-gradient(45deg, #e1d200, #f9c700);
+      color: white;
+      padding: 25px;
+      text-align: center;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      font-size: 1.5rem;
+      letter-spacing: 1px;
+    }
+
+    .menu {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 25px;
+      padding: 40px 20px;
+    }
+
+    .item {
+      background-color: white;
+      border-radius: 15px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      width: 230px;
+      text-align: center;
+      transition: transform 0.3s;
+    }
+
+    .item:hover {
+      transform: scale(1.03);
+    }
+
+    .item img {
+      width: 100%;
+      height: 150px;
+      object-fit: cover;
+      border-radius: 10px;
+      margin-bottom: 10px;
+    }
+
+    .item h3 {
+      margin: 10px 0 5px;
+      font-size: 1.2rem;
+    }
+
+    .item p {
+      margin: 5px 0;
+      font-weight: bold;
+      color: #444;
+    }
+
+    .item button {
+      margin-top: 10px;
+      padding: 8px 15px;
+      border: none;
+      background-color: #b40e0e;
+      color: white;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: background-color 0.3s;
+    }
+
+    .item button:hover {
+      background-color: #8f0a0a;
+    }
+
+    .cart {
+      padding: 30px;
+      background-color: #fff4c2;
+      border-top: 2px solid #eee;
+    }
+
+    .cart h2 {
+      font-size: 1.5rem;
+      margin-bottom: 15px;
+    }
+
+    .cart-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 0;
+      border-bottom: 1px solid #ccc;
+    }
+
+    .cart-item span {
+      font-size: 1rem;
+    }
+
+    .btn-group {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .btn-group button {
+      padding: 5px 10px;
+      background-color: #555;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .btn-group button:hover {
+      background-color: #333;
+    }
+
+    .cart button {
+      margin-top: 20px;
+      padding: 12px 25px;
+      background-color: #0f8f2c;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .cart button:hover {
+      background-color: #0a6b20;
+    }
+
+    #total {
+      font-size: 1.2rem;
+      margin-top: 10px;
+      font-weight: bold;
+    }
+
+    .popup {
+      display: none;
+      position: fixed;
+      top: 25%;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: white;
+      border: 3px solid #333;
+      padding: 40px;
+      z-index: 1000;
+      text-align: center;
+      border-radius: 10px;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+    }
+
+    .popup h2 {
+      margin-bottom: 20px;
+      color: green;
+    }
+
+    .popup button {
+      padding: 10px 20px;
+      background-color: #e1d200;
+      border: none;
+      font-size: 16px;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+
+    .popup button:hover {
+      background-color: #c6b500;
+    }
+
+    @media screen and (max-width: 600px) {
+      .item {
+        width: 90%;
+      }
+
+      .menu {
+        padding: 20px;
+      }
+
+      .cart {
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    🍕 Snacksmith - Order Your Favorites
+  </header>
+
+  <section class="menu">
+    <div class="item">
+      <img src="https://i.pinimg.com/736x/f7/72/23/f77223f50d3641968bc5037fccb64ccc.jpg" alt="Pizza" />
+      <h3>Pizza</h3>
+      <p>₹350</p>
+      <button onclick="addToCart('Pizza', 350)">Add to Cart</button>
+    </div>
+    <div class="item">
+      <img src="https://i.pinimg.com/736x/ae/a7/76/aea77686ef7abd6b426332cf3018e095.jpg" alt="Burger" />
+      <h3>Burger</h3>
+      <p>₹480</p>
+      <button onclick="addToCart('Burger', 480)">Add to Cart</button>
+    </div>
+    <div class="item">
+      <img src="https://i.pinimg.com/736x/33/40/86/33408671a27acb4a1d49cd5a5a90d77b.jpg" alt="Fries" />
+      <h3>Fries</h3>
+      <p>₹60</p>
+      <button onclick="addToCart('Fries', 60)">Add to Cart</button>
+    </div>
+    <div class="item">
+      <img src="https://i.pinimg.com/736x/d4/1c/4e/d41c4ec3fef06f87e6c3bbcfa25392d1.jpg" alt="Juice" />
+      <h3>Juice</h3>
+      <p>₹250</p>
+      <button onclick="addToCart('Juice', 250)">Add to Cart</button>
+    </div>
+  </section>
+
+  <section class="cart">
+    <h2>Your Cart</h2>
+    <div id="cartItems"></div>
+    <h3 id="total">Total: ₹0</h3>
+    <button onclick="placeOrder()">Place Order</button>
+  </section>
+
+  <div class="popup" id="orderPopup">
+    <h2>🎉 Order Placed Successfully!</h2>
+    <button onclick="closePopup()">Close</button>
+  </div>
+
+  <script>
+    let cart = {};
+
+    function addToCart(item, price) {
+      if (cart[item]) {
+        cart[item].qty += 1;
+      } else {
+        cart[item] = { price: price, qty: 1 };
+      }
+      updateCart();
+    }
+
+    function updateCart() {
+      const cartDiv = document.getElementById('cartItems');
+      cartDiv.innerHTML = '';
+      let total = 0;
+
+      for (let item in cart) {
+        const { price, qty } = cart[item];
+        total += price * qty;
+        cartDiv.innerHTML += `
+          <div class="cart-item">
+            <span>${item}</span>
+            <div class="btn-group">
+              <button onclick="changeQty('${item}', -1)">-</button>
+              <span>${qty}</span>
+              <button onclick="changeQty('${item}', 1)">+</button>
+            </div>
+            <span>₹${price * qty}</span>
+            <button onclick="removeItem('${item}')">Remove</button>
+          </div>
+        `;
+      }
+
+      document.getElementById('total').textContent = `Total: ₹${total}`;
+    }
+
+    function changeQty(item, delta) {
+      cart[item].qty += delta;
+      if (cart[item].qty <= 0) {
+        delete cart[item];
+      }
+      updateCart();
+    }
+
+    function removeItem(item) {
+      delete cart[item];
+      updateCart();
+    }
+
+    function placeOrder() {
+      if (Object.keys(cart).length === 0) {
+        alert("Cart is empty!");
+        return;
+      }
+      document.getElementById("orderPopup").style.display = "block";
+      cart = {};
+      updateCart();
+    }
+
+    function closePopup() {
+      document.getElementById("orderPopup").style.display = "none";
+    }
+  </script>
+
+</body>
+</html>
