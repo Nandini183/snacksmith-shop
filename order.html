@@ -3,28 +3,53 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Snacksmith - Food Ordering Website</title>
+  <title>Snacksmith - Food Ordering</title>
   <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
+    :root {
+      --bg-color: #fffdf4;
+      --header-color: #e1d200;
+      --text-color: #333;
+      --card-bg: white;
+      --cart-bg: #fff4c2;
+      --btn-bg: #b40e0e;
+      --btn-text: white;
+    }
+
+    body.dark-mode {
+      --bg-color: #1e1e1e;
+      --header-color: #222;
+      --text-color: #f9f9f9;
+      --card-bg: #2a2a2a;
+      --cart-bg: #333;
+      --btn-bg: #ff5555;
+      --btn-text: #fff;
     }
 
     body {
       font-family: 'Segoe UI', sans-serif;
-      background-color: #fffdf4;
-      color: #333;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      margin: 0;
     }
 
     header {
-      background: linear-gradient(45deg, #e1d200, #f9c700);
+      background-color: var(--header-color);
       color: white;
-      padding: 25px;
+      padding: 20px;
       text-align: center;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-      font-size: 1.5rem;
-      letter-spacing: 1px;
+    }
+
+    .toggle-btn {
+      position: absolute;
+      right: 20px;
+      top: 20px;
+      padding: 5px 15px;
+      background: var(--btn-bg);
+      color: var(--btn-text);
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
     }
 
     .menu {
@@ -32,21 +57,16 @@
       flex-wrap: wrap;
       justify-content: center;
       gap: 25px;
-      padding: 40px 20px;
+      padding: 30px 20px;
     }
 
     .item {
-      background-color: white;
+      background-color: var(--card-bg);
       border-radius: 15px;
       box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
       padding: 20px;
       width: 230px;
       text-align: center;
-      transition: transform 0.3s;
-    }
-
-    .item:hover {
-      transform: scale(1.03);
     }
 
     .item img {
@@ -59,147 +79,97 @@
 
     .item h3 {
       margin: 10px 0 5px;
-      font-size: 1.2rem;
-    }
-
-    .item p {
-      margin: 5px 0;
-      font-weight: bold;
-      color: #444;
     }
 
     .item button {
-      margin-top: 10px;
       padding: 8px 15px;
+      background-color: var(--btn-bg);
+      color: var(--btn-text);
       border: none;
-      background-color: #b40e0e;
-      color: white;
       border-radius: 6px;
       cursor: pointer;
-      font-size: 14px;
-      transition: background-color 0.3s;
-    }
-
-    .item button:hover {
-      background-color: #8f0a0a;
+      margin-top: 10px;
     }
 
     .cart {
-      padding: 30px;
-      background-color: #fff4c2;
-      border-top: 2px solid #eee;
-    }
-
-    .cart h2 {
-      font-size: 1.5rem;
-      margin-bottom: 15px;
+      padding: 20px;
+      background-color: var(--cart-bg);
     }
 
     .cart-item {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 12px 0;
+      padding: 10px 0;
       border-bottom: 1px solid #ccc;
-    }
-
-    .cart-item span {
-      font-size: 1rem;
-    }
-
-    .btn-group {
-      display: flex;
-      align-items: center;
-      gap: 5px;
     }
 
     .btn-group button {
       padding: 5px 10px;
-      background-color: #555;
+      margin: 0 2px;
+      background: #555;
       color: white;
       border: none;
       border-radius: 5px;
       cursor: pointer;
     }
 
-    .btn-group button:hover {
-      background-color: #333;
+    .form-container {
+      padding: 20px;
+      background-color: var(--card-bg);
+      margin: 0 20px;
+      border-radius: 10px;
+    }
+
+    .form-container input {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 6px;
+      border: 1px solid #ccc;
     }
 
     .cart button {
-      margin-top: 20px;
-      padding: 12px 25px;
-      background-color: #0f8f2c;
+      padding: 10px 20px;
+      background-color: green;
       color: white;
       border: none;
       border-radius: 6px;
-      font-size: 16px;
+      margin-top: 15px;
       cursor: pointer;
-      transition: background-color 0.3s;
-    }
-
-    .cart button:hover {
-      background-color: #0a6b20;
-    }
-
-    #total {
-      font-size: 1.2rem;
-      margin-top: 10px;
-      font-weight: bold;
     }
 
     .popup {
       display: none;
       position: fixed;
-      top: 25%;
+      top: 20%;
       left: 50%;
       transform: translateX(-50%);
-      background-color: white;
-      border: 3px solid #333;
-      padding: 40px;
+      background: white;
+      padding: 30px;
       z-index: 1000;
-      text-align: center;
+      border: 2px solid #444;
       border-radius: 10px;
-      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
-    }
-
-    .popup h2 {
-      margin-bottom: 20px;
-      color: green;
+      text-align: center;
+      background-color: var(--card-bg);
+      color: var(--text-color);
     }
 
     .popup button {
+      margin-top: 20px;
       padding: 10px 20px;
-      background-color: #e1d200;
+      background: var(--btn-bg);
+      color: var(--btn-text);
       border: none;
-      font-size: 16px;
-      cursor: pointer;
-      border-radius: 5px;
-    }
-
-    .popup button:hover {
-      background-color: #c6b500;
-    }
-
-    @media screen and (max-width: 600px) {
-      .item {
-        width: 90%;
-      }
-
-      .menu {
-        padding: 20px;
-      }
-
-      .cart {
-        padding: 20px;
-      }
+      border-radius: 6px;
     }
   </style>
 </head>
 <body>
 
   <header>
-    🍕 Snacksmith - Order Your Favorites
+    🍕 Snacksmith
+    <button class="toggle-btn" onclick="toggleDarkMode()">🌓</button>
   </header>
 
   <section class="menu">
@@ -234,10 +204,19 @@
     <div id="cartItems"></div>
     <h3 id="total">Total: ₹0</h3>
     <button onclick="placeOrder()">Place Order</button>
+    <button onclick="window.print()">🖨️ Print Summary</button>
+  </section>
+
+  <section class="form-container">
+    <h3>Customer Details</h3>
+    <input type="text" id="customerName" placeholder="Name" required />
+    <input type="text" id="address" placeholder="Address" required />
+    <input type="tel" id="phone" placeholder="Phone Number" required />
   </section>
 
   <div class="popup" id="orderPopup">
-    <h2>🎉 Order Placed Successfully!</h2>
+    <h2>✅ Order Placed Successfully!</h2>
+    <p id="customerInfo"></p>
     <button onclick="closePopup()">Close</button>
   </div>
 
@@ -296,6 +275,22 @@
         alert("Cart is empty!");
         return;
       }
+
+      const name = document.getElementById("customerName").value;
+      const address = document.getElementById("address").value;
+      const phone = document.getElementById("phone").value;
+
+      if (!name || !address || !phone) {
+        alert("Please fill all customer details.");
+        return;
+      }
+
+      const info = `
+        <strong>Name:</strong> ${name}<br>
+        <strong>Address:</strong> ${address}<br>
+        <strong>Phone:</strong> ${phone}
+      `;
+      document.getElementById("customerInfo").innerHTML = info;
       document.getElementById("orderPopup").style.display = "block";
       cart = {};
       updateCart();
@@ -303,6 +298,10 @@
 
     function closePopup() {
       document.getElementById("orderPopup").style.display = "none";
+    }
+
+    function toggleDarkMode() {
+      document.body.classList.toggle('dark-mode');
     }
   </script>
 
